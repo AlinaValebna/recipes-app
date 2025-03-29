@@ -3,21 +3,54 @@
 {% block title %}All Recipes{% endblock %}
 
 {% block content %}
-<h2>All Recipes</h2>
+<h2 class="mb-3">All Recipes</h2>
+
+<!-- Filter + Search Form -->
+<form method="GET" class="row g-3 mb-4">
+  <div class="col-md-4">
+    <select class="form-select" name="category">
+      <option value="all">All Categories</option>
+      <option value="dessert">Dessert</option>
+      <option value="soup">Soup</option>
+      <option value="fish">Fish</option>
+      <option value="meat">Meat</option>
+      <option value="appetizers">Appetizers</option>
+    </select>
+  </div>
+  <div class="col-md-5">
+    <input type="text" class="form-control" name="search" placeholder="Search by title...">
+  </div>
+  <div class="col-md-3">
+    <button type="submit" class="btn btn-primary w-100">Filter</button>
+  </div>
+</form>
+
+<!-- Recipes Grid -->
 <div class="row">
-    {% for recipe in recipes %}
-    <div class="col-md-4 mb-3">
-        <div class="card">
-            {% if recipe.image %}
-            <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ recipe.title }}</h5>
-                <p class="card-text"><strong>Category:</strong> {{ recipe.category }}</p>
-                <p class="card-text"><strong>Added by:</strong> {{ recipe.user_id }}</p>
-            </div>
+  {% for recipe in recipes %}
+  <div class="col-md-4 mb-4">
+    <div class="card h-100">
+      {% if recipe.image %}
+      <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top" alt="{{ recipe.title }}">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ recipe.title }}</h5>
+        <p><strong>Category:</strong> {{ recipe.category }}</p>
+        <p><strong>Ingredients:</strong><br>{{ recipe.ingredients|truncate(100) }}</p>
+        <p><strong>Process:</strong><br>{{ recipe.process|truncate(100) }}</p>
+        {% if recipe.source %}
+        <p><a href="{{ recipe.source }}" target="_blank">Source Link</a></p>
+        {% endif %}
+        <p><strong>Votes:</strong></p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='interesting') }}" class="btn btn-outline-primary btn-sm">❤️ {{ recipe.votes_interesting }}</a>
+          <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='mindblowing') }}" class="btn btn-outline-success btn-sm">😋 {{ recipe.votes_mindblowing }}</a>
+          <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='false') }}" class="btn btn-outline-danger btn-sm">😕 {{ recipe.votes_false }}</a>
         </div>
+      </div>
     </div>
-    {% endfor %}
+  </div>
+  {% endfor %}
 </div>
+
 {% endblock %}

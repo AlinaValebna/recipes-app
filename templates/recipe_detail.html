@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}{{ recipe.title }}{% endblock %}
+{% block content %}
+<h2>{{ recipe.title }}</h2>
+<p><strong>Category:</strong> {{ recipe.category }}</p>
+<p><strong>Tags:</strong> {{ recipe.tags or '—' }}</p>
+<p><strong>Ingredients:</strong></p>
+<p>{{ recipe.ingredients }}</p>
+<p><strong>Cooking Process:</strong></p>
+<p>{{ recipe.process }}</p>
+{% if recipe.source %}
+<p><a href="{{ recipe.source }}" target="_blank">Source</a></p>
+{% endif %}
+{% if recipe.image %}
+<img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="img-fluid mt-3 mb-3">
+{% endif %}
+<p><strong>Votes:</strong></p>
+<ul class="list-inline">
+  <li class="list-inline-item">❤️ {{ recipe.votes_interesting }}</li>
+  <li class="list-inline-item">😋 {{ recipe.votes_mindblowing }}</li>
+  <li class="list-inline-item">😕 {{ recipe.votes_false }}</li>
+</ul>
+{% if current_user.is_authenticated and current_user.id == recipe.user_id %}
+  <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="btn btn-warning">Edit</a>
+  <a href="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" class="btn btn-danger">Delete</a>
+{% endif %}
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-2">← Back</a>
+{% endblock %}
