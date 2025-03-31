@@ -109,7 +109,7 @@ def add_recipe():
         tags = request.form.get('tags')
         ingredients = request.form['ingredients']
         process = request.form['process']
-        source = request.form['source']
+        source = request.form.get('source', '')
         image_file = request.files['image']
         filename = secure_filename(image_file.filename)
         if filename:
@@ -147,7 +147,7 @@ def edit_recipe(recipe_id):
         recipe.tags = request.form.get('tags')
         recipe.ingredients = request.form['ingredients']
         recipe.process = request.form['process']
-        recipe.source = request.form['source']
+        recipe.source = request.form.get('source', '')
         db.session.commit()
         flash('Recipe updated successfully!')
         return redirect(url_for('recipe_detail', recipe_id=recipe.id))

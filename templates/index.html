@@ -34,7 +34,9 @@
       <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top" alt="{{ recipe.title }}">
       {% endif %}
       <div class="card-body">
-        <h5 class="card-title">{{ recipe.title }}</h5>
+        <h5 class="card-title">
+          <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">{{ recipe.title }}</a>
+        </h5>
         <p><strong>Category:</strong> {{ recipe.category }}</p>
         <p><strong>Ingredients:</strong><br>{{ recipe.ingredients|truncate(100) }}</p>
         <p><strong>Process:</strong><br>{{ recipe.process|truncate(100) }}</p>
