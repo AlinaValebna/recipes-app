@@ -3,9 +3,8 @@
 {% block title %}All Recipes{% endblock %}
 
 {% block content %}
-<h2 class="mb-3">All Recipes</h2>
+<h2 class="mb-4 text-center">Discover Recipes</h2>
 
-<!-- Filter + Search Form -->
 <form method="GET" class="row g-3 mb-4">
   <div class="col-md-4">
     <select class="form-select" name="category">
@@ -25,34 +24,31 @@
   </div>
 </form>
 
-<!-- Recipes Grid -->
 <div class="row">
   {% for recipe in recipes %}
   <div class="col-md-4 mb-4">
-    <div class="card h-100">
+    <div class="card h-100 shadow-sm border-0" style="border-radius: 1rem;">
       {% if recipe.image %}
-      <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top" alt="{{ recipe.title }}">
+      <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top rounded-top" style="height: 200px; object-fit: cover;">
       {% endif %}
       <div class="card-body">
         <h5 class="card-title">
-          <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">{{ recipe.title }}</a>
+          <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="text-decoration-none text-dark">
+            {{ recipe.title }} 🍽️
+          </a>
         </h5>
         <p><strong>Category:</strong> {{ recipe.category }}</p>
-        <p><strong>Ingredients:</strong><br>{{ recipe.ingredients|truncate(100) }}</p>
-        <p><strong>Process:</strong><br>{{ recipe.process|truncate(100) }}</p>
-        {% if recipe.source %}
-        <p><a href="{{ recipe.source }}" target="_blank">Source Link</a></p>
-        {% endif %}
-        <p><strong>Votes:</strong></p>
-        <div class="d-flex gap-2 flex-wrap">
-          <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='interesting') }}" class="btn btn-outline-primary btn-sm">❤️ {{ recipe.votes_interesting }}</a>
-          <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='mindblowing') }}" class="btn btn-outline-success btn-sm">😋 {{ recipe.votes_mindblowing }}</a>
-          <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='false') }}" class="btn btn-outline-danger btn-sm">😕 {{ recipe.votes_false }}</a>
+        {% if recipe.tags %}
+        <div class="mb-2">
+          {% for tag_item in recipe.tags.split(',') %}
+          <a href="{{ url_for('index', tag=tag_item.strip()) }}" class="badge bg-warning text-dark text-decoration-none">{{ tag_item.strip() }}</a>
+          {% endfor %}
         </div>
+        {% endif %}
+        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-outline-primary btn-sm">View Recipe</a>
       </div>
     </div>
   </div>
   {% endfor %}
 </div>
-
 {% endblock %}

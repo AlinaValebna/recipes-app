@@ -33,7 +33,7 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text, nullable=False)
     process = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(150))
-    source = db.Column(db.String(250))
+    source = db.Column(db.String(250), nullable=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
     votes_interesting = db.Column(db.Integer, default=0)
     votes_mindblowing = db.Column(db.Integer, default=0)
@@ -106,7 +106,7 @@ def add_recipe():
     if request.method == 'POST':
         title = request.form['title']
         category = request.form['category']
-        tags = request.form.get('tags')
+        tags = request.form.get('tags', '')
         ingredients = request.form['ingredients']
         process = request.form['process']
         source = request.form.get('source', '')
@@ -144,7 +144,7 @@ def edit_recipe(recipe_id):
     if request.method == 'POST':
         recipe.title = request.form['title']
         recipe.category = request.form['category']
-        recipe.tags = request.form.get('tags')
+        recipe.tags = request.form.get('tags', '')
         recipe.ingredients = request.form['ingredients']
         recipe.process = request.form['process']
         recipe.source = request.form.get('source', '')

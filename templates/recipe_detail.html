@@ -3,6 +3,16 @@
 {% block content %}
 <h2>{{ recipe.title }}</h2>
 <p><strong>Category:</strong> {{ recipe.category }}</p>
+{% if recipe.tags %}
+  <div class="mb-3">
+    {% for tag in recipe.tags.split(',') %}
+      <span class="badge bg-info text-dark">{{ tag.strip() }}</span>
+    {% endfor %}
+  </div>
+{% endif %}
+<a href="{{ url_for('index', tag=tag.strip()) }}" class="badge bg-secondary text-decoration-none">
+  {{ tag.strip() }}
+</a>
 <p><strong>Tags:</strong> {{ recipe.tags or '—' }}</p>
 <p><strong>Ingredients:</strong></p>
 <p>{{ recipe.ingredients }}</p>
