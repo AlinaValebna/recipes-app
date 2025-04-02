@@ -3,52 +3,56 @@
 {% block title %}All Recipes{% endblock %}
 
 {% block content %}
-<h2 class="mb-4 text-center">Discover Recipes</h2>
-
-<form method="GET" class="row g-3 mb-4">
+<!-- Search Bar Row -->
+<form method="GET" class="row justify-content-end g-2 mb-4">
   <div class="col-md-4">
-    <select class="form-select" name="category">
-      <option value="all">All Categories</option>
-      <option value="dessert">Dessert</option>
-      <option value="soup">Soup</option>
-      <option value="fish">Fish</option>
-      <option value="meat">Meat</option>
-      <option value="appetizers">Appetizers</option>
-    </select>
+    <input type="text" class="form-control" name="search" placeholder="Search by title..." value="{{ request.args.get('search', '') }}">
   </div>
-  <div class="col-md-5">
-    <input type="text" class="form-control" name="search" placeholder="Search by title...">
-  </div>
-  <div class="col-md-3">
-    <button type="submit" class="btn btn-primary w-100">Filter</button>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">Search Recipe</button>
   </div>
 </form>
 
 <div class="row">
-  {% for recipe in recipes %}
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm border-0" style="border-radius: 1rem;">
-      {% if recipe.image %}
-      <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top rounded-top" style="height: 200px; object-fit: cover;">
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">
-          <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="text-decoration-none text-dark">
-            {{ recipe.title }} 🍽️
-          </a>
-        </h5>
-        <p><strong>Category:</strong> {{ recipe.category }}</p>
-        {% if recipe.tags %}
-        <div class="mb-2">
-          {% for tag_item in recipe.tags.split(',') %}
-          <a href="{{ url_for('index', tag=tag_item.strip()) }}" class="badge bg-warning text-dark text-decoration-none">{{ tag_item.strip() }}</a>
-          {% endfor %}
+  <!-- Sidebar: Categories -->
+  <div class="col-md-3 mb-4">
+    <h5 class="mb-3">Categories</h5>
+    <ul class="list-group">
+      {% set categories = ['breakfast', 'appetizers', 'salads', 'soup', 'meat', 'fish', 'dessert'] %}
+      {% for cat in categories %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{{ url_for('index', category=cat) }}" class="text-decoration-none text-dark">
+          {{ cat.capitalize() }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Recipes Grid -->
+  <div class="col-md-9">
+    <div class="row">
+      {% for recipe in recipes %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm border-0" style="border-radius: 1rem; min-height: 430px;">
+          {% if recipe.image %}
+          <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top rounded-top" style="height: 200px; object-fit: cover;">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">
+              <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="text-decoration-none text-dark">
+                {{ recipe.title }} 🍽️
+              </a>
+            </h5>
+            <p class="text-muted"><strong>Category:</strong> {{ recipe.category }}</p>
+            <div class="mt-auto">
+              <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-outline-primary btn-sm">View Recipe</a>
+            </div>
+          </div>
         </div>
-        {% endif %}
-        <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-outline-primary btn-sm">View Recipe</a>
       </div>
+      {% endfor %}
     </div>
   </div>
-  {% endfor %}
 </div>
 {% endblock %}

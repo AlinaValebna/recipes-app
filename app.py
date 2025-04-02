@@ -29,7 +29,6 @@ class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
     category = db.Column(db.String(50), nullable=False)
-    tags = db.Column(db.String(150), nullable=True)
     ingredients = db.Column(db.Text, nullable=False)
     process = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(150))
@@ -80,14 +79,10 @@ def logout():
 def index():
     category = request.args.get('category')
     search = request.args.get('search')
-    tag = request.args.get('tag')
     query = Recipe.query
 
     if category and category != 'all':
         query = query.filter_by(category=category)
-
-    if tag:
-        query = query.filter(Recipe.tags.contains(tag))
 
     if search:
         query = query.filter(Recipe.title.contains(search))
@@ -106,7 +101,6 @@ def add_recipe():
     if request.method == 'POST':
         title = request.form['title']
         category = request.form['category']
-        tags = request.form.get('tags', '')
         ingredients = request.form['ingredients']
         process = request.form['process']
         source = request.form.get('source', '')
@@ -121,7 +115,6 @@ def add_recipe():
         new_recipe = Recipe(
             title=title,
             category=category,
-            tags=tags,
             ingredients=ingredients,
             process=process,
             image=filename,
@@ -144,7 +137,6 @@ def edit_recipe(recipe_id):
     if request.method == 'POST':
         recipe.title = request.form['title']
         recipe.category = request.form['category']
-        recipe.tags = request.form.get('tags', '')
         recipe.ingredients = request.form['ingredients']
         recipe.process = request.form['process']
         recipe.source = request.form.get('source', '')
@@ -185,6 +177,8 @@ def vote(recipe_id, vote_type):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
+    if os.path.exists("recipes.db"):
+        os.remove("recipes.db")
     with app.app_context():
         db.create_all()
     app.run(debug=True)

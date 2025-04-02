@@ -3,34 +3,48 @@
 {% block title %}Add New Recipe{% endblock %}
 
 {% block content %}
-<h2>Add New Recipe</h2>
-<form method="POST" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label>Title</label>
-        <input class="form-control" type="text" name="title" required>
-    </div>
-    <div class="mb-3">
-        <label>Category</label>
-        <select class="form-control" name="category">
-            <option>Dessert</option>
-            <option>Soup</option>
-            <option>Fish</option>
-            <option>Meat</option>
-            <option>Appetizers</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label>Ingredients</label>
-        <textarea class="form-control" name="ingredients" rows="4" required></textarea>
-    </div>
-    <div class="mb-3">
-        <label>Cooking Process</label>
-        <textarea class="form-control" name="process" rows="5" required></textarea>
-    </div>
-    <div class="mb-3">
-        <label>Image</label>
-        <input class="form-control" type="file" name="image">
-    </div>
-    <button class="btn btn-primary">Add Recipe</button>
+<h2 class="mb-4 text-center">➕ Add a New Recipe</h2>
+
+<form method="POST" enctype="multipart/form-data" class="card shadow p-4 mx-auto" style="max-width: 700px;">
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" name="title" id="title" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <select name="category" class="form-select" id="category" required>
+      <option value="">Choose...</option>
+      <option value="breakfast">Breakfast</option>
+      <option value="appetizers">Appetizers</option>
+      <option value="salads">Salads</option>
+      <option value="soup">Soup</option>
+      <option value="meat">Meat</option>
+      <option value="fish">Fish</option>
+      <option value="dessert">Dessert</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="ingredients" class="form-label">Ingredients</label>
+    <textarea class="form-control" name="ingredients" id="ingredients" rows="4" required></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="process" class="form-label">Process</label>
+    <textarea class="form-control" name="process" id="process" rows="5" required></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="source" class="form-label">Source (optional)</label>
+    <input type="text" class="form-control" name="source" id="source">
+  </div>
+
+  <div class="mb-3">
+    <label for="image" class="form-label">Upload an Image</label>
+    <input type="file" class="form-control" name="image" id="image">
+  </div>
+
+  <button type="submit" class="btn btn-success w-100">Save Recipe</button>
 </form>
 {% endblock %}

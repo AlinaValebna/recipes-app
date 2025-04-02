@@ -1,38 +1,41 @@
 {% extends 'base.html' %}
+
 {% block title %}{{ recipe.title }}{% endblock %}
+
 {% block content %}
-<h2>{{ recipe.title }}</h2>
-<p><strong>Category:</strong> {{ recipe.category }}</p>
-{% if recipe.tags %}
-  <div class="mb-3">
-    {% for tag in recipe.tags.split(',') %}
-      <span class="badge bg-info text-dark">{{ tag.strip() }}</span>
-    {% endfor %}
+<div class="card shadow-sm mb-4">
+  {% if recipe.image %}
+  <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top" style="max-height: 400px; object-fit: cover;">
+  {% endif %}
+  <div class="card-body">
+    <h2 class="card-title">{{ recipe.title }}</h2>
+    <p class="text-muted"><strong>Category:</strong> {{ recipe.category }}</p>
+    <p><strong>Posted on:</strong> {{ recipe.date.strftime('%B %d, %Y') }}</p>
+
+    <hr>
+    <h5>🧾 Ingredients</h5>
+    <p>{{ recipe.ingredients }}</p>
+
+    <h5>👨‍🍳 Process</h5>
+    <p>{{ recipe.process }}</p>
+
+    {% if recipe.source %}
+    <p><strong>Source:</strong> <a href="{{ recipe.source }}" target="_blank">{{ recipe.source }}</a></p>
+    {% endif %}
+
+    <hr>
+    <h6>Vote:</h6>
+    <div class="mb-3">
+      <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='interesting') }}" class="btn btn-outline-success btn-sm">❤️ {{ recipe.votes_interesting }}</a>
+      <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='mindblowing') }}" class="btn btn-outline-warning btn-sm">😋 {{ recipe.votes_mindblowing }}</a>
+      <a href="{{ url_for('vote', recipe_id=recipe.id, vote_type='false') }}" class="btn btn-outline-danger btn-sm">😕 {{ recipe.votes_false }}</a>
+    </div>
+
+    {% if current_user.is_authenticated and current_user.id == recipe.user_id %}
+    <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="btn btn-warning">✏️ Edit</a>
+    <a href="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" class="btn btn-danger">🗑️ Delete</a>
+    {% endif %}
+    <a href="{{ url_for('index') }}" class="btn btn-secondary float-end">← Back to Recipes</a>
   </div>
-{% endif %}
-<a href="{{ url_for('index', tag=tag.strip()) }}" class="badge bg-secondary text-decoration-none">
-  {{ tag.strip() }}
-</a>
-<p><strong>Tags:</strong> {{ recipe.tags or '—' }}</p>
-<p><strong>Ingredients:</strong></p>
-<p>{{ recipe.ingredients }}</p>
-<p><strong>Cooking Process:</strong></p>
-<p>{{ recipe.process }}</p>
-{% if recipe.source %}
-<p><a href="{{ recipe.source }}" target="_blank">Source</a></p>
-{% endif %}
-{% if recipe.image %}
-<img height="300" width="300" src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="img-fluid mt-3 mb-3">
-{% endif %}
-<p><strong>Votes:</strong></p>
-<ul class="list-inline">
-  <li class="list-inline-item">❤️ {{ recipe.votes_interesting }}</li>
-  <li class="list-inline-item">😋 {{ recipe.votes_mindblowing }}</li>
-  <li class="list-inline-item">😕 {{ recipe.votes_false }}</li>
-</ul>
-{% if current_user.is_authenticated and current_user.id == recipe.user_id %}
-  <a href="{{ url_for('edit_recipe', recipe_id=recipe.id) }}" class="btn btn-warning">Edit</a>
-  <a href="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" class="btn btn-danger">Delete</a>
-{% endif %}
-<a href="{{ url_for('index') }}" class="btn btn-secondary mt-2">← Back</a>
+</div>
 {% endblock %}
