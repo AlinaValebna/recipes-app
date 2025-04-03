@@ -1,33 +1,44 @@
 {% extends 'base.html' %}
+
 {% block title %}Edit Recipe{% endblock %}
+
 {% block content %}
-<h2>Edit Recipe</h2>
-<form method="POST">
+<h2 class="mb-4 text-center">✏️ Edit Your Recipe</h2>
+
+<form method="POST" enctype="multipart/form-data" class="card shadow p-4 mx-auto" style="max-width: 700px;">
   <div class="mb-3">
-    <label>Title</label>
-    <input class="form-control" type="text" name="title" value="{{ recipe.title }}" required>
+    <label for="title" class="form-label">Title</label>
+    <input class="form-control" type="text" name="title" id="title" value="{{ recipe.title }}" required>
   </div>
+
   <div class="mb-3">
-    <label>Category</label>
-    <input class="form-control" type="text" name="category" value="{{ recipe.category }}" required>
+    <label for="category" class="form-label">Category</label>
+    <select name="category" class="form-select" id="category" required>
+      <option value="breakfast" {% if recipe.category == 'breakfast' %}selected{% endif %}>Breakfast</option>
+      <option value="appetizers" {% if recipe.category == 'appetizers' %}selected{% endif %}>Appetizers</option>
+      <option value="salads" {% if recipe.category == 'salads' %}selected{% endif %}>Salads</option>
+      <option value="soup" {% if recipe.category == 'soup' %}selected{% endif %}>Soup</option>
+      <option value="meat" {% if recipe.category == 'meat' %}selected{% endif %}>Meat</option>
+      <option value="fish" {% if recipe.category == 'fish' %}selected{% endif %}>Fish</option>
+      <option value="dessert" {% if recipe.category == 'dessert' %}selected{% endif %}>Dessert</option>
+    </select>
   </div>
+
   <div class="mb-3">
-    <label>Tags</label>
-    <input class="form-control" type="text" name="tags" value="{{ recipe.tags }}">
+    <label for="ingredients" class="form-label">Ingredients</label>
+    <textarea class="form-control" name="ingredients" id="ingredients" rows="4" required>{{ recipe.ingredients }}</textarea>
   </div>
+
   <div class="mb-3">
-    <label>Ingredients</label>
-    <textarea class="form-control" name="ingredients">{{ recipe.ingredients }}</textarea>
+    <label for="process" class="form-label">Process</label>
+    <textarea class="form-control" name="process" id="process" rows="5" required>{{ recipe.process }}</textarea>
   </div>
+
   <div class="mb-3">
-    <label>Process</label>
-    <textarea class="form-control" name="process">{{ recipe.process }}</textarea>
+    <label for="source" class="form-label">Source (optional)</label>
+    <input class="form-control" type="text" name="source" id="source" value="{{ recipe.source }}">
   </div>
-  <div class="mb-3">
-    <label>Source</label>
-    <input class="form-control" type="text" name="source" value="{{ recipe.source }}">
-  </div>
-  <button class="btn btn-success">Save Changes</button>
-  <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" class="btn btn-secondary">Cancel</a>
+
+  <button type="submit" class="btn btn-success w-100">💾 Save Changes</button>
 </form>
 {% endblock %}

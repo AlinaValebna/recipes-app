@@ -5,7 +5,9 @@
 {% block content %}
 <div class="card shadow-sm mb-4">
   {% if recipe.image %}
-  <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}" class="card-img-top" style="max-height: 400px; object-fit: cover;">
+  <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}"
+       class="img-fluid rounded mb-3 recipe-image-detail"
+       alt="{{ recipe.title }}">
   {% endif %}
   <div class="card-body">
     <h2 class="card-title">{{ recipe.title }}</h2>
@@ -22,6 +24,8 @@
     {% if recipe.source %}
     <p><strong>Source:</strong> <a href="{{ recipe.source }}" target="_blank">{{ recipe.source }}</a></p>
     {% endif %}
+
+    
 
     <hr>
     <h6>Vote:</h6>
