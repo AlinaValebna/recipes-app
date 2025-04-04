@@ -11,7 +11,7 @@
         }
         .remy-title {
             font-family: 'Caveat', cursive;
-            font-size: 2rem;
+            font-size: 24px;
             color: #6c5b7b;
         }
         .navbar-brand {
@@ -101,6 +101,9 @@
     font-size: 1.4rem;
     margin-right: 0.8rem;
   }
+  .navbar .nav-link {
+    font-weight: 500;
+  }
 </style>
 
 </head>
@@ -122,10 +125,21 @@
     </nav>
 
     <div class="container mt-4">
-        <div class="text-left mb-4">
-            <img src="{{ url_for('static', filename='logo.png') }}" height="100" alt="Remy the Chef">
-            <h2 class="remy-title">Even the smallest chef can create magic in the kitchen.</h2>
-        </div>
+        <div class="row align-items-center mb-4">
+            <!-- Left: Logo & Title -->
+            <div class="col-md-6 d-flex align-items-center">
+              <img src="{{ url_for('static', filename='logo.png') }}" height="80" class="me-3" alt="Remy logo">
+              <h1 class="remy-title mb-0" style="margin-top:48px">Even the smallest chef can create magic in the kitchen!</h1>
+            </div>
+          
+            <!-- Right: Search Bar -->
+            <div class="col-md-6">
+              <form method="GET" action="{{ url_for('index') }}" class="d-flex justify-content-end">
+                <input type="text" name="search" class="form-control me-2" placeholder="Search recipes..." value="{{ request.args.get('search', '') }}">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+              </form>
+            </div>
+          </div>
 
         {% with messages = get_flashed_messages() %}
             {% if messages %}

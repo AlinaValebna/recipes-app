@@ -37,20 +37,11 @@
 </div>
 {% endif %}
 
-<!-- Search Bar Row -->
-<form method="GET" class="row justify-content-end g-2 mb-4">
-  <div class="col-md-4">
-    <input type="text" class="form-control" name="search" placeholder="Search by title..." value="{{ request.args.get('search', '') }}">
-  </div>
-  <div class="col-md-2">
-    <button type="submit" class="btn btn-primary w-100">Search Recipe</button>
-  </div>
-</form>
 
 <div class="row">
   <!-- Sidebar: Categories -->
   <div class="col-md-3 mb-4">
-    <h5 class="mb-3">🍽️ Categories</h5>
+    <h5 class="mb-3">🍽️ CATEGORIES</h5>
     {% set categories = {
       'breakfast': '🥐',
       'appetizers': '🥖',
