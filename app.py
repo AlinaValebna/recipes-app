@@ -75,6 +75,7 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+
 @app.route('/', methods=['GET'])
 def index():
     category = request.args.get('category')
@@ -88,7 +89,10 @@ def index():
         query = query.filter(Recipe.title.contains(search))
 
     recipes = query.order_by(Recipe.id.desc()).all()
-    return render_template('index.html', recipes=recipes, selected_category=category)
+    featured_recipe = random.choice(recipes) if recipes else None
+
+    return render_template('index.html', recipes=recipes, featured_recipe=featured_recipe, selected_category=category)
+
 
 @app.route('/recipe/<int:recipe_id>')
 def recipe_detail(recipe_id):

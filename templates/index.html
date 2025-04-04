@@ -3,6 +3,37 @@
 {% block title %}All Recipes{% endblock %}
 
 {% block content %}
+
+{% if featured_recipe %}
+<div class="p-4 p-md-5 mb-4 hero-section">
+  <div class="row align-items-center">
+    <!-- Left: Featured Image -->
+    <div class="col-md-6 text-center mb-3 mb-md-0">
+      {% if featured_recipe.image %}
+      <img src="{{ url_for('static', filename='uploads/' + featured_recipe.image) }}"
+           alt="{{ featured_recipe.title }}"
+           class="img-fluid hero-img">
+      {% endif %}
+    </div>
+
+    <!-- Right: Text + Recipe Card -->
+    <div class="col-md-6">
+      <h1 class="display-5 fw-bold">Anyone Can Cook!</h1>
+      <p class="lead">Even the smallest chef can create magic in the kitchen.</p>
+
+      <div class="bg-white text-dark p-3 rounded shadow-sm mt-3">
+        <h4 class="mb-2">{{ featured_recipe.title }}</h4>
+        <p class="mb-1"><strong>Category:</strong> {{ featured_recipe.category }}</p>
+        <a href="{{ url_for('recipe_detail', recipe_id=featured_recipe.id) }}" class="btn btn-outline-dark btn-sm mt-2">View Recipe</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+
+
 <!-- Search Bar Row -->
 <form method="GET" class="row justify-content-end g-2 mb-4">
   <div class="col-md-4">
